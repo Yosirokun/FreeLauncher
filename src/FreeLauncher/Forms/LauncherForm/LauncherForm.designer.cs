@@ -163,7 +163,7 @@ namespace FreeLauncher.Forms
             // 
             // mainPageView
             // 
-            this.mainPageView.Controls.Add(this.News);
+           // this.mainPageView.Controls.Add(this.News);
             this.mainPageView.Controls.Add(this.ConsolePage);
             this.mainPageView.Controls.Add(this.EditVersions);
             this.mainPageView.Controls.Add(this.EditProfiles);
@@ -171,7 +171,7 @@ namespace FreeLauncher.Forms
             this.mainPageView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainPageView.Location = new System.Drawing.Point(0, 0);
             this.mainPageView.Name = "mainPageView";
-            this.mainPageView.SelectedPage = this.News;
+            this.mainPageView.SelectedPage = this.ConsolePage;
             this.mainPageView.Size = new System.Drawing.Size(858, 363);
             this.mainPageView.TabIndex = 2;
             this.mainPageView.ThemeName = "VisualStudio2012Dark";
@@ -179,13 +179,13 @@ namespace FreeLauncher.Forms
             // 
             // News
             // 
-            this.News.Controls.Add(this.newsBrowser);
-            this.News.Controls.Add(this.navBar);
-            this.News.ItemSize = new System.Drawing.SizeF(65F, 24F);
-            this.News.Location = new System.Drawing.Point(5, 30);
-            this.News.Name = "News";
-            this.News.Size = new System.Drawing.Size(848, 328);
-            this.News.Text = "НОВОСТИ";
+            //this.News.Controls.Add(this.newsBrowser);
+            //this.News.Controls.Add(this.navBar);
+            //this.News.ItemSize = new System.Drawing.SizeF(65F, 24F);
+            //this.News.Location = new System.Drawing.Point(5, 30);
+            //this.News.Name = "News";
+            //this.News.Size = new System.Drawing.Size(848, 328);
+            //this.News.Text = "НОВОСТИ";
             // 
             // newsBrowser
             // 

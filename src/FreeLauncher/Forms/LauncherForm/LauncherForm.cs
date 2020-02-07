@@ -104,7 +104,7 @@ namespace FreeLauncher.Forms
             CloseGameOutput.Checked = _cfg.CloseTabAfterSuccessfulExitCode;
             LoadLocalization();
 
-            Text = $"{ProductName} {ProductVersion}";
+            Text = $"{ProductName + " Seaberry Edition"} {"1.0.3"}";
             AboutVersion.Text = ProductVersion;
             AppendLog($"Application: {ProductName}");
             AppendLog($"Version: {ProductVersion}");
@@ -115,7 +115,7 @@ namespace FreeLauncher.Forms
             AppendLog($"{new string(' ', 4)}OSFullName: {new ComputerInfo().OSFullName}");
             AppendLog($"{new string(' ', 4)}Build: {Environment.OSVersion.Version.Build}");
             AppendLog($"{new string(' ', 4)}Is64BitOperatingSystem: {Environment.Is64BitOperatingSystem}");
-            AppendLog($"{new string(' ', 2)}Java path: '{Java.JavaInstallationPath}' ({Java.JavaBitInstallation}-bit)");
+           //// AppendLog($"{new string(' ', 2)}Java path: '{Java.JavaInstallationPath}' ({Java.JavaBitInstallation}-bit)");
             AppendLog(new string('=', 12));
 
             if (_configuration.LocalizationsList.Count != 0) {
@@ -155,8 +155,8 @@ Please, check for your Internet configuration and restart the launcher.
 </body></html>";
                 Text += " [OFFLINE]";
             } else {
-                newsBrowser.Navigate("http://dedepete.github.io/FreeLauncher");
-                CheckLauncherUpdates();
+                //newsBrowser.Navigate("http://dedepete.github.io/FreeLauncher");
+                //CheckLauncherUpdates();
             }
 
             UpdateVersions();
@@ -713,9 +713,9 @@ Please, check for your Internet configuration and restart the launcher.
                     {
                         "profiles", new JObject {
                             {
-                                ProductName, new JObject {
+                                "Seaberry", new JObject {
                                     {
-                                        "name", ProductName
+                                        "name", "Seaberry"
                                     }, {
                                         "allowedReleaseTypes", new JArray {
                                             "other"
@@ -724,30 +724,11 @@ Please, check for your Internet configuration and restart the launcher.
                                         "launcherVisibilityOnGameClose", "keep the launcher open"
                                     }
                                 }
-                            }, {
-                                "Latest Release", new JObject {
-                                    {
-                                        "name", "Latest Release"
-                                    }, {
-                                        "launcherVisibilityOnGameClose", "keep the launcher open"
-                                    }
-                                }
-                            }, {
-                                "Latest Snapshot", new JObject {
-                                    {
-                                        "name", "Latest Snapshot"
-                                    }, {
-                                        "allowedReleaseTypes", new JArray {
-                                            "snapshot"
-                                        }
-                                    }, {
-                                        "launcherVisibilityOnGameClose", "keep the launcher open"
-                                    }
-                                }
+                            
                             }
                         }
                     }, {
-                        "selectedProfile", ProductName
+                        "selectedProfile", "Seaberry"
                     }
                 }.ToString());
                 _profileManager = ProfileManager.ParseProfile(profilesPath);
@@ -1128,6 +1109,7 @@ Please, check for your Internet configuration and restart the launcher.
                     versionsListView.Items.Add(version.VersionId, version.ReleaseType, version.ReleaseTime, version.LastUpdateTime,
                         version.AssetsIndex ?? "null", version.InheritsFrom ?? _configuration.Localization.Independent);
                 }
+                if (_selectedProfile == null) _selectedProfile = _profileManager.GetProfile("Seaberry");
                 string path = Path.Combine(_configuration.McVersions,
                     _selectedProfile.SelectedVersion ?? GetLatestVersion(_selectedProfile));
                 string state = _configuration.Localization.ReadyToLaunch;
