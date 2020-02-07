@@ -6,7 +6,7 @@ namespace FreeLauncher
     internal static class Java
     {
         public static string JavaExecutable
-            => GetJavaInstallationPath() == null ? null : string.Format("{0}\\bin\\java.exe", GetJavaInstallationPath());
+            => GetJavaInstallationPath() == null ? null : string.Format("{0}\\bin\\java.exe", GetJavaInstallationPath() != null ? GetJavaInstallationPath() : Environment.GetEnvironmentVariable("JAVA_HOME"));
 
         public static string JavaInstallationPath => GetJavaInstallationPath();
 

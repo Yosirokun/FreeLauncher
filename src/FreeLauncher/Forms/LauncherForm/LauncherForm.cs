@@ -468,6 +468,7 @@ Please, check for your Internet configuration and restart the launcher.
                             jvmArguments = javaArguments +
                                 $"-Djava.library.path={nativesPath} -cp {(libraries.Contains(' ') ? $@"""{libraries}""" : libraries)}";
                         }
+                        var fef = Environment.GetEnvironmentVariable("JAVA_HOME");
                         ProcessStartInfo proc = new ProcessStartInfo {
                             UseShellExecute = false,
                             RedirectStandardOutput = true,
@@ -480,6 +481,8 @@ Please, check for your Internet configuration and restart the launcher.
                             Arguments =
                                 $"{jvmArguments} {selectedVersionManifest.MainClass} {gameArguments}"
                         };
+                        if(string.IsNullOrEmpty(proc.FileName)) throw new Exception("Veuillez installer Java avant de lancer Minecraft.");
+
                         AppendLog($"Command line executed: \"{proc.FileName}\" {proc.Arguments}");
                         new MinecraftProcess(new Process {
                                 StartInfo = proc,
@@ -649,7 +652,7 @@ Please, check for your Internet configuration and restart the launcher.
 
         private void UpdateVersions()
         {
-            string versionsManifestPath = Path.Combine(_configuration.McVersions, @"\versions.json");
+            string versionsManifestPath = string.Concat(_configuration.McVersions, @"\versions.json");
             if (_configuration.Arguments.OfflineMode) {
                 AppendLog("Unable to get new version list: offline-mode enabled.");
                 if (File.Exists(versionsManifestPath)) {
@@ -666,7 +669,7 @@ Please, check for your Internet configuration and restart the launcher.
                 Directory.CreateDirectory(_configuration.McVersions);
             }
             if (!File.Exists(versionsManifestPath)) {
-                File.WriteAllText(versionsManifestPath, remoteManifest.ToString());
+                 File.WriteAllText(versionsManifestPath, remoteManifest.ToString());
                 _versionList = remoteManifest;
                 return;
             }
@@ -692,7 +695,7 @@ Please, check for your Internet configuration and restart the launcher.
         {
             profilesDropDownBox.Items.Clear();
             profilesListView.Items.Clear();
-            string profilesPath = Path.Combine(_configuration.McDirectory, @"\launcher_profiles.json");
+            string profilesPath = string.Concat(_configuration.McDirectory, @"\launcher_profiles.json");
             try {
                 _profileManager =
                     ProfileManager.ParseProfile(profilesPath);
@@ -705,7 +708,7 @@ Please, check for your Internet configuration and restart the launcher.
                     string fileName = $"launcher_profiles-{LinuxTimeStamp}.bak.json";
                     AppendLog("A copy of old profile list has been created: " + fileName);
                     File.Move(profilesPath,
-                        Path.Combine(_configuration.McDirectory, fileName));
+                        string.Concat(_configuration.McDirectory, fileName));
                 }
                 File.WriteAllText(profilesPath, new JObject {
                     {
@@ -807,7 +810,7 @@ Please, check for your Internet configuration and restart the launcher.
             StatusBarValue = 0;
             UpdateStatusBarText(string.Format(_configuration.Localization.CheckingVersionAvailability, version));
             AppendLog($"Checking '{version}' version availability...");
-            string path = Path.Combine(_configuration.McVersions, version + @"\");
+            string path = string.Concat(_configuration.McVersions, version + @"\");
             if (!Directory.Exists(path)) {
                 Directory.CreateDirectory(path);
             }
@@ -815,10 +818,11 @@ Please, check for your Internet configuration and restart the launcher.
                 if (!_configuration.Arguments.OfflineMode) {
                     filename = version + ".json";
                     UpdateStatusBarAndLog($"Downloading {filename}...", new StackFrame().GetMethod().Name);
+                    if (!Directory.Exists(string.Concat(_configuration.McVersions, @"\", version))) Directory.CreateDirectory(string.Concat(_configuration.McVersions, @"\", version));
+                    var fileToSave = string.Format(@"{0}\{1}\{1}.json", _configuration.McVersions, version);
                     downloader.DownloadFileTaskAsync(
                         new Uri(_versionList.GetVersion(version)?.ManifestUrl ?? string.Format(
-                            "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", version)),
-                        string.Format(@"{0}\{1}\{1}.json", _configuration.McVersions, version)).Wait();
+                            "https://s3.amazonaws.com/Minecraft.Download/versions/{0}/{0}.json", version)), fileToSave ).Wait();
                 } else {
                     AppendException($"Unable to download version {version}: offline-mode enabled.");
                     return;

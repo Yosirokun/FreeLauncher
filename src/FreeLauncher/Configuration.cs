@@ -33,9 +33,10 @@ namespace FreeLauncher
             Localization = new ApplicationLocalization();
             LocalizationsList = new Dictionary<string, ApplicationLocalization>();
             Parser.Default.ParseArguments<ApplicationArguments>(args).WithParsed(arguments => Arguments = arguments);
-            McDirectory = Arguments.WorkingDirectory ??
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    ".minecraft");
+            McDirectory = string.Concat(Environment.CurrentDirectory, @"\.minecraft");
+                //Arguments.WorkingDirectory ??
+                //Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                //    ".minecraft");
             McLauncher = Path.Combine(McDirectory, "freelauncher");
             McVersions = Path.Combine(McDirectory, "versions");
             McLibs = Path.Combine(McDirectory, "libraries");
