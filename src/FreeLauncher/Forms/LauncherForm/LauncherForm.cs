@@ -468,14 +468,13 @@ Please, check for your Internet configuration and restart the launcher.
                             jvmArguments = javaArguments +
                                 $"-Djava.library.path={nativesPath} -cp {(libraries.Contains(' ') ? $@"""{libraries}""" : libraries)}";
                         }
-                        var fef = Environment.GetEnvironmentVariable("JAVA_HOME");
                         ProcessStartInfo proc = new ProcessStartInfo {
                             UseShellExecute = false,
                             RedirectStandardOutput = true,
                             RedirectStandardError = true,
                             WindowStyle = ProcessWindowStyle.Hidden,
                             CreateNoWindow = true,
-                            FileName = _selectedProfile.JavaExecutable ?? Java.JavaExecutable,
+                            FileName = string.Concat(Environment.CurrentDirectory,  @"\Java\jre1.8.0_241\bin\java.exe"),//_selectedProfile.JavaExecutable ?? Java.JavaExecutable,
                             StandardErrorEncoding = Encoding.UTF8,
                             WorkingDirectory = _selectedProfile.WorkingDirectory ?? _configuration.McDirectory,
                             Arguments =
